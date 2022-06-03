@@ -1,0 +1,34 @@
+{% block doc -%}
+<!DOCTYPE html>
+<html{% block html_attribs %}{% endblock html_attribs %}>
+    {%- block html %}
+    <head>
+        {%- block head %}
+        <meta charset="utf-8">
+        <title>{% block title %}{{ title|default("Tele Wallet", true) }}{% endblock title %}</title>
+        {%- endblock head %}
+    </head>
+    <body{% block body_attribs %}{% endblock body_attribs %}>
+
+        {% block navbar %}
+        {%- endblock navbar %}
+
+        {% block body -%}
+            {% block content -%}
+            {%- endblock content %}
+            {% block scripts %}
+            {%- endblock scripts %}
+        {%- endblock body %}
+
+        <footer class="footer mt-auto py-3" style="background-color: rgb(25, 25, 25);">
+          <div class="container">
+            <span class="text-muted">Coś tu elegancko sie napisze</span>
+{#            | <a href="?lang=en">en</a>#}
+{#            | <a href="?lang=pl">pl</a>#}
+          </div>
+        </footer>
+
+    </body>
+    {%- endblock html %}
+</html>
+{% endblock doc -%}
