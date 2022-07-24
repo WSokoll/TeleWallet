@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.4-beta1" use-changelog="false" last-position="0,57" last-zoom="0.4" max-obj-count="15"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="teleWallet" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="User" layers="0" collapse-mode="2" max-obj-count="15" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="320" y="20"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="last_login_at">
+		<type name="date" length="0"/>
+	</column>
+	<column name="current_login_at">
+		<type name="date" length="0"/>
+	</column>
+	<column name="last_login_ip">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="current_login_ip">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="login_count">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="active">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="fs_uniquifier" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="confirmed_at">
+		<type name="date" length="0"/>
+	</column>
+	<column name="account_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="User_pk" type="pk-constr" table="public.&quot;User&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="User_uq" type="uq-constr" table="public.&quot;User&quot;">
+		<columns names="account_id,email,username,fs_uniquifier" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Role" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1260" y="20"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="80"/>
+	</column>
+	<column name="description">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="Role_pk" type="pk-constr" table="public.&quot;Role&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="Role_uq" type="uq-constr" table="public.&quot;Role&quot;">
+		<columns names="name" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Account" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1240" y="200"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="active" not-null="true" default-value="FALSE">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="created_at">
+		<type name="date" length="0"/>
+	</column>
+	<constraint name="Account_pk" type="pk-constr" table="public.&quot;Account&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="SubAccount" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1260" y="680"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="balance" default-value="0.0">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="account_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="currency_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="SubAccount_pk" type="pk-constr" table="public.&quot;SubAccount&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Currency" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="400" y="760"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="exchange_rate" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<constraint name="Currency_pk" type="pk-constr" table="public.&quot;Currency&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="InternalTransaction" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="0" y="440"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="transaction_from" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="transaction_to" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="currency_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="value" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="transaction_date" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="InternalTransaction_pk" type="pk-constr" table="public.&quot;InternalTransaction&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="ExternalTransaction" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="380" y="440"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="transaction_from">
+		<type name="varchar" length="500"/>
+	</column>
+	<column name="transaction_to" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="currency_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="value" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="transaction_date" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="name">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="ExternalTransaction_pk" type="pk-constr" table="public.&quot;ExternalTransaction&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="CurrencyExchange" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="760" y="440"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="user_id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="currency_from" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="currency_to" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="value_old" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="value_new" not-null="true">
+		<type name="double precision" length="0"/>
+	</column>
+	<constraint name="CurrencyExchange_pk" type="pk-constr" table="public.&quot;CurrencyExchange&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="RolesUsers" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="820" y="20"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="user_id">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="role_id">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="RolesUsers_pk" type="pk-constr" table="public.&quot;RolesUsers&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="User_fk_Account" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Account&quot;" table="public.&quot;User&quot;">
+	<columns names="account_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="SubAccount_fk_Currency" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Currency&quot;" table="public.&quot;SubAccount&quot;">
+	<columns names="currency_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="SubAccount_fk_Account" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Account&quot;" table="public.&quot;SubAccount&quot;">
+	<columns names="account_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="InternalTransaction_fk_from" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;User&quot;" table="public.&quot;InternalTransaction&quot;">
+	<columns names="transaction_from" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="InternalTransaction_fk_to" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;User&quot;" table="public.&quot;InternalTransaction&quot;">
+	<columns names="transaction_to" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="InternalTransaction_fk_Currency" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Currency&quot;" table="public.&quot;InternalTransaction&quot;">
+	<columns names="currency_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ExternalTransaction_fk_to" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;User&quot;" table="public.&quot;ExternalTransaction&quot;">
+	<columns names="transaction_to" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ExternalTransaction_fk_Currency" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Currency&quot;" table="public.&quot;ExternalTransaction&quot;">
+	<columns names="currency_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="CurrencyExchange_fk_User" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;User&quot;" table="public.&quot;CurrencyExchange&quot;">
+	<columns names="user_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="CurrencyExchange_fk_from" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Currency&quot;" table="public.&quot;CurrencyExchange&quot;">
+	<columns names="currency_from" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="CurrencyExchange_fk_to" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Currency&quot;" table="public.&quot;CurrencyExchange&quot;">
+	<columns names="currency_to" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="RolesUsers_fk_User" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;User&quot;" table="public.&quot;RolesUsers&quot;">
+	<columns names="user_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="RolesUsers_fk_Role" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Role&quot;" table="public.&quot;RolesUsers&quot;">
+	<columns names="role_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="SubAccount_has_one_currency" type="relfk" layers="0"
+	 custom-color="#064731"
+	 src-table="public.&quot;SubAccount&quot;"
+	 dst-table="public.&quot;Currency&quot;" reference-fk="SubAccount_fk_Currency"
+	 src-required="false" dst-required="true">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="account_has_multiple_subAccounts" type="relfk" layers="0"
+	 src-table="public.&quot;SubAccount&quot;"
+	 dst-table="public.&quot;Account&quot;" reference-fk="SubAccount_fk_Account"
+	 src-required="false" dst-required="true">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="user_has_one_unique_account" type="relfk" layers="0"
+	 src-table="public.&quot;User&quot;"
+	 dst-table="public.&quot;Account&quot;" reference-fk="User_fk_Account"
+	 src-required="false" dst-required="true">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_Transactions_Users&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;InternalTransaction&quot;"
+	 dst-table="public.&quot;User&quot;" reference-fk="InternalTransaction_fk_from"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_Transactions_Users1&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;InternalTransaction&quot;"
+	 dst-table="public.&quot;User&quot;" reference-fk="InternalTransaction_fk_to"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_Transactions_Currencies&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;InternalTransaction&quot;"
+	 dst-table="public.&quot;Currency&quot;" reference-fk="InternalTransaction_fk_Currency"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_ExternalTransactions_Users&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;ExternalTransaction&quot;"
+	 dst-table="public.&quot;User&quot;" reference-fk="ExternalTransaction_fk_to"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_ExternalTransactions_Currencies&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;ExternalTransaction&quot;"
+	 dst-table="public.&quot;Currency&quot;" reference-fk="ExternalTransaction_fk_Currency"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_CurrencyExchanges_Users&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;CurrencyExchange&quot;"
+	 dst-table="public.&quot;User&quot;" reference-fk="CurrencyExchange_fk_User"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_CurrencyExchanges_Currencies&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;CurrencyExchange&quot;"
+	 dst-table="public.&quot;Currency&quot;" reference-fk="CurrencyExchange_fk_from"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_CurrencyExchanges_Currencies1&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;CurrencyExchange&quot;"
+	 dst-table="public.&quot;Currency&quot;" reference-fk="CurrencyExchange_fk_to"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="&quot;rel_RolesUsers_User&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;RolesUsers&quot;"
+	 dst-table="public.&quot;User&quot;" reference-fk="RolesUsers_fk_User"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_RolesUsers_Role&quot;" type="relfk" layers="0"
+	 src-table="public.&quot;RolesUsers&quot;"
+	 dst-table="public.&quot;Role&quot;" reference-fk="RolesUsers_fk_Role"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
