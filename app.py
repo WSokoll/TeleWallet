@@ -1,7 +1,11 @@
+import secrets
+
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security,SQLAlchemyUserDatastore
 
 db = SQLAlchemy()
+security = Security()
 
 
 def create_app():
@@ -16,6 +20,11 @@ def create_app():
                                              f"/{app.config['DB_NAME']}")
 
     db.init_app(app)
+
+    # Setup Flask-Security module
+    from models import User, Role
+    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    security.init_app(app, user_datastore)
 
     # Register blueprints
     from views.home import bp as bp_home
