@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template
-from models import Role
-from app import db
 
 bp = Blueprint('bp_home', __name__, template_folder='templates')
 
