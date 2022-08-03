@@ -27,20 +27,6 @@ def create_app():
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     security.init_app(app, user_datastore)
 
-    # Create a user to test with
-    @app.before_first_request
-    def create_user():
-        if not user_datastore.find_user(email="test2@test"):
-            user_datastore.create_user(
-                email="test2@test",
-                username='tes2t',
-                password=hash_password("test2"),
-                confirmed_at=datetime.now(),
-                roles=['User'],
-                account_id=1
-            )
-        db.session.commit()
-
     # Register blueprints
     from views.home import bp as bp_home
     app.register_blueprint(bp_home)
