@@ -34,4 +34,7 @@ def create_app():
     from views.account import bp as bp_account
     app.register_blueprint(bp_account)
 
+    from views.transaction import bp as bp_transaction
+    app.register_blueprint(bp_transaction)
+
     return app
