@@ -38,14 +38,14 @@ def get_post_internal(account_id=0, currency_name='pl'):
     if form.validate_on_submit():
 
         user_to = User.query.filter_by(name=form.username_to.data).first()
-        sub_accounts_to = SubAccount.query.filter_by(account_id=user_to.account_id)
+        sub_accounts_to = SubAccount.query.filter_by(account_id=user_to.account_id).all()
 
         # check if user has sub-account in given currency
         if currency.id in [sa.currency_id for sa in sub_accounts_to]:
-            sub_account_to = SubAccount.query.filter_by(account_id=user_to.account_id, currency_id=currency.id)
+            sub_account_to = SubAccount.query.filter_by(account_id=user_to.account_id, currency_id=currency.id).first()
             value_to = float(form.value.data)
         else:
-            sub_account_to = SubAccount.query.filter_by(account_id=user_to.account_id, currency_id=1)
+            sub_account_to = SubAccount.query.filter_by(account_id=user_to.account_id, currency_id=1).first()
             value_to = float(form.value.data) * currency.exchange_rate
 
         transaction = InternalTransaction(transaction_from=user_from.id,
