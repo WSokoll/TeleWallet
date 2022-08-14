@@ -31,11 +31,14 @@ def create_app():
     from views.home import bp as bp_home
     app.register_blueprint(bp_home)
 
-    # from views.account import bp as bp_account
-    # app.register_blueprint(bp_account)
+    from views.account import bp as bp_account
+    app.register_blueprint(bp_account)
 
     from views.transaction import bp as bp_transaction
     app.register_blueprint(bp_transaction)
+
+    from views.exchange import bp as bp_exchange
+    app.register_blueprint(bp_exchange)
 
     @app.before_first_request
     def db_init():
