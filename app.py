@@ -33,9 +33,9 @@ def create_app():
 
     # from views.account import bp as bp_account
     # app.register_blueprint(bp_account)
-    #
-    # from views.transaction import bp as bp_transaction
-    # app.register_blueprint(bp_transaction)
+
+    from views.transaction import bp as bp_transaction
+    app.register_blueprint(bp_transaction)
 
     @app.before_first_request
     def db_init():
@@ -76,7 +76,7 @@ def create_app():
         #         confirmed_at=datetime.datetime.now(),
         #         roles=['User'],
         #         account_id=1,
-        #         username='test1'
+        #         name='test1'
         #     )
         # if not user_datastore.find_user(email="test2@test"):
         #     user_datastore.create_user(
@@ -85,7 +85,7 @@ def create_app():
         #         confirmed_at=datetime.datetime.now(),
         #         roles=['User'],
         #         account_id=2,
-        #         username='test2'
+        #         name='test2'
         #     )
         # db.session.commit()
         # --------------------------------------------------------------------
