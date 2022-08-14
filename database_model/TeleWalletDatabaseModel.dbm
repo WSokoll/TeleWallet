@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.4-beta1" use-changelog="false" last-position="0,57" last-zoom="0.4" max-obj-count="15"
+<dbmodel pgmodeler-ver="0.9.4-beta1" use-changelog="false" last-position="0,0" last-zoom="0.8" max-obj-count="15"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -28,7 +28,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="email" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
-	<column name="username" not-null="true">
+	<column name="name" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
 	<column name="password" not-null="true">
@@ -65,7 +65,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 	<constraint name="User_uq" type="uq-constr" table="public.&quot;User&quot;">
-		<columns names="account_id,email,username,fs_uniquifier" ref-type="src-columns"/>
+		<columns names="account_id,email,name,fs_uniquifier" ref-type="src-columns"/>
 	</constraint>
 </table>
 
