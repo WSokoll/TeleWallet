@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, render_template, abort, redirect, url_for, flash
+from flask_login import login_required
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField
 from wtforms.validators import InputRequired, Length, Regexp
@@ -14,6 +15,7 @@ bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 
 # Internal transaction page
 @bp.route('/transaction/internal/<account_id>/<string:currency_name>', methods=['GET', 'POST'])
+@login_required
 def get_post_internal(account_id=0, currency_name='pl'):
     currencies = Currency.query.order_by(Currency.name).all()
 
