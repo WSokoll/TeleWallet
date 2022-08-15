@@ -18,8 +18,7 @@ class ValueVSOwnedValidator:
             raise ValidationError(
                 self.message
                 or field.gettext(
-                    "Stan Twojego konta jest niższy od wpisanej wartości przelewu."
-
+                    "Stan Twojego konta jest niższy od wpisanej wartości."
                 )
             )
 
