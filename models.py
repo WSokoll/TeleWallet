@@ -1,4 +1,4 @@
-from flask_security import RoleMixin, UserMixin
+from flask_security.models import fsqla_v2 as fsqla
 from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION
 
 from app import db
@@ -11,14 +11,14 @@ class RolesUsers(db.Model):
     role_id = db.Column('role_id', db.Integer(), db.ForeignKey('Role.id'))
 
 
-class Role(db.Model, RoleMixin):
+class Role(db.Model, fsqla.FsRoleMixin):
     __tablename__ = 'Role'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(255))
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, fsqla.FsUserMixin):
     __tablename__ = 'User'
     id = db.Column(db.Integer(), primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
