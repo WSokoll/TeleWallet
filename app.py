@@ -41,8 +41,8 @@ def create_app():
     app.register_blueprint(bp_exchange)
 
     @app.before_first_request
-    def db_init():
-        from models import Account, Currency, SubAccount
+    def create_test_data():
+        # from models import Account, Currency, SubAccount
 
         # --------------------------- phase one ------------------------------
         # account1 = Account(active=True, created_at=datetime.datetime.now())
