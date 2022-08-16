@@ -50,11 +50,13 @@ def create_app():
         #
         # currency1 = Currency(name='zł', exchange_rate=1.0)
         # currency2 = Currency(name='eur', exchange_rate=4.68)
+        # currency3 = Currency(name='usd', exchange_rate=4.61)
         #
         # db.session.add(account1)
         # db.session.add(account2)
         # db.session.add(currency1)
         # db.session.add(currency2)
+        # db.session.add(currency3)
         # db.session.commit()
         # --------------------------------------------------------------------
 
@@ -69,28 +71,30 @@ def create_app():
         # db.session.add(sub_account3)
         # db.session.add(sub_account4)
 
-        # if not user_datastore.find_role(role='User'):
-        #     db.session.add(Role(name='User', description='Normal user'))
-        #
-        # if not user_datastore.find_user(email="test@test"):
-        #     user_datastore.create_user(
-        #         email="test@test",
-        #         password=hash_password("test"),
-        #         confirmed_at=datetime.datetime.now(),
-        #         roles=['User'],
-        #         account_id=1,
-        #         name='test1'
-        #     )
-        # if not user_datastore.find_user(email="test2@test"):
-        #     user_datastore.create_user(
-        #         email="test2@test",
-        #         password=hash_password("test"),
-        #         confirmed_at=datetime.datetime.now(),
-        #         roles=['User'],
-        #         account_id=2,
-        #         name='test2'
-        #     )
-        # db.session.commit()
+        if not user_datastore.find_role(role='User'):
+            db.session.add(Role(name='User', description='Normal user'))
+        if not user_datastore.find_role(role='Admin'):
+            db.session.add(Role(name='Admin', description='Admin role'))
+
+        if not user_datastore.find_user(email="test1@test.com"):
+            user_datastore.create_user(
+                email="test1@test.com",
+                password=hash_password("test"),
+                confirmed_at=datetime.datetime.now(),
+                roles=['User'],
+                account_id=1,
+                name='test1'
+            )
+        if not user_datastore.find_user(email="test2@test.com"):
+            user_datastore.create_user(
+                email="test2@test.com",
+                password=hash_password("test"),
+                confirmed_at=datetime.datetime.now(),
+                roles=['User'],
+                account_id=2,
+                name='test2'
+            )
+        db.session.commit()
         # --------------------------------------------------------------------
 
     return app
