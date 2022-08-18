@@ -38,14 +38,6 @@
             </nav>
         {%- endblock navbar %}
 
-        {% block body -%}
-            {% block content -%}
-            {%- endblock content %}
-            {% block scripts %}
-
-            {%- endblock scripts %}
-        {%- endblock body %}
-
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <div id="alerts">
@@ -66,6 +58,14 @@
             </div>
           {% endif %}
         {% endwith %}
+
+        {% block body -%}
+            {% block content -%}
+            {%- endblock content %}
+
+            {% block scripts %}
+            {%- endblock scripts %}
+        {%- endblock body %}
 
         <footer class="footer mt-auto py-3 bg-dark" >
           <div class="container">
