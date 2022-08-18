@@ -7,4 +7,9 @@
     <button>Internal transaction</button>
   </a>
 
+  <a href="{{ url_for("bp_exchange.get_post", account_id=sub_account.account_id) }}">
+    <button>Currency exchange</button>
+  </a>
+
+
 {% endblock %}

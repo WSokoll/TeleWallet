@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <form method="POST" action="{{  url_for("bp_exchange.get_post", account_id=sub_accounts[0].account_id) }}">
+    {{ form.csrf_token }}
+
+    {{ form.currency_from.label(class_="form-label")  }}:
+    {{ form.currency_from (class_="form-control") }}
+
+    {{ form.currency_to.label(class_="form-label")  }}:
+    {{ form.currency_to (class_="form-control") }}
+
+    {{ form.value_from.label(class_="form-label")  }}:
+    {{ form.value_from (class_="form-control") }}
+
+    {{ form.value_to.label(class_="form-label")  }}:
+    {{ form.value_to (class_="form-control") }}
+
+    <button type="submit" class="btn btn-primary mt-4">
+      Wymień
+    </button>
+  </form>
+
+{% endblock %}
