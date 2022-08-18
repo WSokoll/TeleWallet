@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-Stronka account...
+  Stronka account...
+
+  <a href="{{ url_for("bp_transaction.get_post_internal", account_id=sub_account.account_id, currency_name=currency.name) }}">
+    <button>Internal transaction</button>
+  </a>
+
 {% endblock %}

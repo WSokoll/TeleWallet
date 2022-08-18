@@ -10,7 +10,7 @@
   <h4>Stan twojego konta: </h4>
   <h4>{{ sub_account.balance }}</h4>
 
-  <form method="POST" action="{{ url_for('bp_transaction.get_post_internal') }}">
+  <form method="POST" action="{{ url_for('bp_transaction.get_post_internal', account_id=sub_account.account_id, currency_name=currency.name) }}">
       {{ form.csrf_token }}
 
       {{ form.username_from.label(class_="form-label")  }}:
