@@ -46,6 +46,27 @@
             {%- endblock scripts %}
         {%- endblock body %}
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div id="alerts">
+            {% for category, message in messages %}
+              {% if category == 'error' %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                    <button type="button" class="btn-close float-end" aria-label="Close" onclick=delete_flash(this)></button>
+                </div>
+
+              {% else %}
+                <div class="alert alert-primary">
+                    {{ message }}
+                    <button type="button" class="btn-close float-end" aria-label="Close" onclick=delete_flash(this)></button>
+                </div>
+              {% endif %}
+            {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
         <footer class="footer mt-auto py-3 bg-dark" >
           <div class="container">
             <span class="text-muted">TeleWallet | WWWijs | Władysław Sokołowski | Jakub Wojnarowicz | Languages: </span>

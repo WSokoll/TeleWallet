@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <form method="POST" action="{{ url_for('bp_auth.login') }}">
+    {{ form.csrf_token }}
+
+    {{ form.email.label }}: {{ form.email(class_="form-control") }}
+    {{ form.password.label }}: {{ form.password(class_="form-control") }}
+
+    <button type="submit" class="btn btn-primary mt-4">Zaloguj</button>
+  </form>
+
+
+{% endblock %}

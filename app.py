@@ -2,11 +2,11 @@ import secrets
 import datetime
 
 from flask import Flask, render_template
-from flask_security import Security, SQLAlchemyUserDatastore, hash_password
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
+login_manager = LoginManager()
 db = SQLAlchemy()
-security = Security()
 
 
 def create_app():
@@ -22,10 +22,14 @@ def create_app():
 
     db.init_app(app)
 
-    # Setup Flask-Security module
-    from models import User, Role
-    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-    security.init_app(app, user_datastore)
+    # init flask login
+    login_manager.init_app(app)
+
+    from models import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.filter_by(id=int(user_id)).first()
 
     # Register blueprints
     from views.home import bp as bp_home
@@ -40,8 +44,12 @@ def create_app():
     from views.exchange import bp as bp_exchange
     app.register_blueprint(bp_exchange)
 
-    @app.before_first_request
-    def create_test_data():
+    from views.auth import bp as bp_auth
+    app.register_blueprint(bp_auth)
+
+    # TEST DATA
+    # @app.before_first_request
+    # def create_test_data():
         # from models import Account, Currency, SubAccount
 
         # --------------------------- phase one ------------------------------
@@ -70,31 +78,25 @@ def create_app():
         # db.session.add(sub_account2)
         # db.session.add(sub_account3)
         # db.session.add(sub_account4)
-
-        if not user_datastore.find_role(role='User'):
-            db.session.add(Role(name='User', description='Normal user'))
-        if not user_datastore.find_role(role='Admin'):
-            db.session.add(Role(name='Admin', description='Admin role'))
-
-        if not user_datastore.find_user(email="test1@test.com"):
-            user_datastore.create_user(
-                email="test1@test.com",
-                password=hash_password("test"),
-                confirmed_at=datetime.datetime.now(),
-                roles=['User'],
-                account_id=1,
-                name='test1'
-            )
-        if not user_datastore.find_user(email="test2@test.com"):
-            user_datastore.create_user(
-                email="test2@test.com",
-                password=hash_password("test"),
-                confirmed_at=datetime.datetime.now(),
-                roles=['User'],
-                account_id=2,
-                name='test2'
-            )
-        db.session.commit()
+        #
+        # user1 = User(email="test1@test.com",
+        #              password="test",
+        #              confirmed_at=datetime.datetime.now(),
+        #              account_id=1,
+        #              name='Adam Nowak',
+        #              fs_uniquifier=123)
+        #
+        # user2 = User(email="test2@test.com",
+        #              password="test",
+        #              confirmed_at=datetime.datetime.now(),
+        #              account_id=2,
+        #              name='Marek Kowalski',
+        #              fs_uniquifier=321)
+        #
+        # db.session.add(user1)
+        # db.session.add(user2)
+        #
+        # db.session.commit()
         # --------------------------------------------------------------------
 
     return app
