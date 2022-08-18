@@ -11,7 +11,7 @@
             <title>{% block title %}{{ title|default("Tele Wallet", true) }}{% endblock title %}</title>
         {%- endblock head %}
     </head>
-    <body{% block body_attribs %} class="d-flex flex-column min-vh-100" {% endblock body_attribs %}>
+    <body{% block body_attribs %} class="d-flex flex-column min-vh-100 bg-light" {% endblock body_attribs %}>
         {% block navbar %}
             <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
               <div class="container-fluid">
