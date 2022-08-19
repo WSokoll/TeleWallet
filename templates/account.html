@@ -1,15 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
-  Stronka account...
+    <h1 class="text-center">Twoje konto</h1>
+    <div class="container-xxl">
+        <div class="row mx-auto mt-2">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body gap-2 mx-auto text-center">
+                        <h5 class="card-title">Stan konta</h5>
+                        <h4>{{ sub_account.balance }} {# {{ currency.name }} #}PLN</h4>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Zmień walutę
+                        </button>
+                    </div>
+                </div>
 
-  <a href="{{ url_for("bp_transaction.get_post_internal", account_id=sub_account.account_id, currency_name=currency.name) }}">
-    <button>Internal transaction</button>
-  </a>
+                <div class="card mt-3">
+                    <div class="card-body d-grid gap-2 mx-auto text-center">
+                        <h5 class="card-title">Dostępne akcje</h5>
+                        <div>
+                            <a class="btn btn-secondary"
+                               href="{{ url_for("bp_transaction.get_post_internal", account_id=sub_account.account_id, currency_name=currency.name) }}">
+                                Internal transaction
+                            </a>
+                        </div>
+                        <div>
+                            <a class="btn btn-secondary"
+                               href="{{ url_for("bp_exchange.get_post", account_id=sub_account.account_id) }}">
+                                Currency exchange
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h4 class="card-title">Historia stanu konta</h4>
+                        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        Siemano
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mx-auto">
 
-  <a href="{{ url_for("bp_exchange.get_post", account_id=sub_account.account_id) }}">
-    <button>Currency exchange</button>
-  </a>
+            <div class="col-md-11">
+                <div class="card">
+                    <div class="card-header">Ale mamy esse</div>
+                    <div class="card-body">Co nie</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom"
+         aria-labelledby="offcanvasBottomLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">Wybierz walutę</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body small">
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
+                    PLN
+                </button>
+                <button type="button" class="list-group-item list-group-item-action">EUR</button>
+                <button type="button" class="list-group-item list-group-item-action">CHF</button>
+                <button type="button" class="list-group-item list-group-item-action" disabled>USD</button>
+                <button type="button" class="list-group-item list-group-item-action" disabled>JPY</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
 
 
 {% endblock %}
