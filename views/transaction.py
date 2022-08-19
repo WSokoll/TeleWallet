@@ -28,7 +28,7 @@ def get_post_internal(account_id=0, currency_name='pl'):
         username_from = StringField('Od', validators=[InputRequired(), Length(max=255)], render_kw={'readonly': True})
         username_to = StringField('Do', validators=[InputRequired(), Length(max=255), UserExistsValidator()])
         title = StringField('Tytuł', validators=[Length(max=255)])
-        value = StringField('Kwota przelewu', validators=[InputRequired(), Regexp(r'^[0-9.]*$'), ValueVSOwnedValidator()])
+        value = StringField('Kwota przelewu', validators=[InputRequired(), ValueVSOwnedValidator()])
         owned_value = HiddenField()
 
     currency = Currency.query.filter_by(name=currency_name).first()

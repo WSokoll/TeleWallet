@@ -1,3 +1,5 @@
+import re
+
 from wtforms import ValidationError
 
 from models import User
@@ -14,7 +16,15 @@ class ValueVSOwnedValidator:
 
     def __call__(self, form, field):
 
-        if float(form.value.data) > float(form.owned_value.data):
+        if not re.match(r'^[0-9.]*$', field.data):
+            raise ValidationError(
+                self.message
+                or field.gettext(
+                    "Dopuszczone wyłącznie cyfry oraz znak kropki."
+                )
+            )
+
+        if float(field.data) > float(form.owned_value.data):
             raise ValidationError(
                 self.message
                 or field.gettext(
