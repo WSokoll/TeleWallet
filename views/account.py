@@ -13,9 +13,13 @@ def get(account_id=0, currency_name='pln'):
     if account_id == 0:
         abort(404)
 
-    # check if sub-account exists (jakiś try except od sqlalchemy) tak samo z walutą
     currency = Currency.query.filter_by(name=currency_name).first()
+    if not currency:
+        abort(404)
+
     sub_account = SubAccount.query.filter_by(account_id=account_id, currency_id=currency.id).first()
+    if not sub_account:
+        abort(404)
 
     return render_template('account.html', currency=currency, sub_account=sub_account)
 
