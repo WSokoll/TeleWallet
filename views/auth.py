@@ -3,12 +3,12 @@ from flask_login import login_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length, Email
+from passlib.hash import sha256_crypt
 
 from models import User
 
 bp = Blueprint('bp_auth', __name__, template_folder='templates')
 
-# zroboć hashowanie hasła
 # next
 
 
@@ -22,9 +22,9 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data, password=form.password.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
 
-        if user:
+        if user and sha256_crypt.verify(form.password.data, user.password):
             login_user(user)
             flash('Zalogowano')
 

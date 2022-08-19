@@ -5,6 +5,8 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
+from passlib.hash import sha256_crypt
+
 login_manager = LoginManager()
 db = SQLAlchemy()
 
@@ -80,14 +82,14 @@ def create_app():
         # db.session.add(sub_account4)
         #
         # user1 = User(email="test1@test.com",
-        #              password="test",
+        #              password=sha256_crypt.encrypt("test1"),
         #              confirmed_at=datetime.datetime.now(),
         #              account_id=1,
         #              name='Adam Nowak',
         #              fs_uniquifier=123)
         #
         # user2 = User(email="test2@test.com",
-        #              password="test",
+        #              password=sha256_crypt.encrypt("test2"),
         #              confirmed_at=datetime.datetime.now(),
         #              account_id=2,
         #              name='Marek Kowalski',
