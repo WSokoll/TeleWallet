@@ -17,7 +17,6 @@ def get_post(account_id=0):
     if account_id == 0:
         abort(404)
 
-    # TODO:  dynamiczne pole select (jak wybrana jedna waluta, to w drugim do wyboru inne, poza tą wybraną)
     # TODO:  walidator dostępnej kwoty...(jakoś we froncie? z wykożystaniem sub_accounts i currencies)
     # TODO: dynamicznie zmieniające sie pole value_to w zależności od wpisanej kwoty value_from
 

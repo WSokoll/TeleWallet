@@ -21,5 +21,31 @@
       Wymień
     </button>
   </form>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $().ready(function () {
+      let currency_from_select = document.getElementById('currency_from');
+      let currency_to_select = document.getElementById('currency_to');
+      let account_id = {{ sub_accounts[0].account_id }};
+
+      currency_from_select.onchange = function() {
+        let currency = currency_from_select.value;
+
+        fetch('/exchange/' + account_id + '/' + currency + '/other').then(function(response) {
+          response.json().then(function(data){
+            let optionHTML = '';
+
+            for(let cu of data.other){
+                optionHTML += '<option value="' + cu + '">' + cu + '</option>';
+            }
+
+            currency_to_select.innerHTML = optionHTML;
+          })
+        });
+      }
+    });
+  </script>
 
 {% endblock %}
