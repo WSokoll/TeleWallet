@@ -12,8 +12,7 @@ from validators import ValueVSOwnedValidator, UserExistsValidator
 
 bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 
-# tranzakcyjność
-# walidator ValueVSOwnedValidator musi też sprawdzić regexpa
+# TODO: transactions (database)
 
 # Internal transaction page
 @bp.route('/transaction/internal/<account_id>/<string:currency_name>', methods=['GET', 'POST'])

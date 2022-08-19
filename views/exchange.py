@@ -17,9 +17,9 @@ def get_post(account_id=0):
     if account_id == 0:
         abort(404)
 
-    # dynamiczne pole select (jak wybrana jedna waluta, to w drugim do wyboru inne, poza tą wybraną)
-    # walidator dostępnej kwoty...(jakoś we froncie? z wykożystaniem sub_accounts i currencies)
-    # dynamicznie zmieniające sie pole value_to w zależności od wpisanej kwoty value_from
+    # TODO:  dynamiczne pole select (jak wybrana jedna waluta, to w drugim do wyboru inne, poza tą wybraną)
+    # TODO:  walidator dostępnej kwoty...(jakoś we froncie? z wykożystaniem sub_accounts i currencies)
+    # TODO: dynamicznie zmieniające sie pole value_to w zależności od wpisanej kwoty value_from
 
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
     currencies = []

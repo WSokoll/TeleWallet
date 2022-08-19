@@ -4,6 +4,7 @@ from wtforms import ValidationError
 
 from models import User
 
+# TODO: (Babel) - translation of validation error messages
 
 class ValueVSOwnedValidator:
     """Validates that user has enough money to sent given amount
