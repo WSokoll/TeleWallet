@@ -14,6 +14,7 @@ bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 
 # TODO: transactions (database)
 
+
 # Internal transaction page
 @bp.route('/transaction/internal/<account_id>/<string:currency_name>', methods=['GET', 'POST'])
 @login_required
