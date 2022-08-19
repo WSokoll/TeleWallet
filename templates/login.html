@@ -1,15 +1,31 @@
 {% extends "base.html" %}
 
+{% block title %}
+Logowanie
+{% endblock %}
+
 {% block content %}
 
-  <form method="POST" action="{{ url_for('bp_auth.login') }}">
-    {{ form.csrf_token }}
+    <div class="container text-center col-3 mx-auto rounded">
 
-    {{ form.email.label }}: {{ form.email(class_="form-control") }}
-    {{ form.password.label }}: {{ form.password(class_="form-control") }}
 
-    <button type="submit" class="btn btn-primary mt-4">Zaloguj</button>
-  </form>
 
+        <main class="form-signin">
+        <form method="POST" action="{{ url_for('bp_auth.login') }}">
+            <img class="mb-4 mt-2 rounded" src="../static/img/telewallet-logo-slim.png" alt="" >
+            <h1 class="h3 mb-3 fw-normal">Logowanie do konta</h1>
+            {{ form.csrf_token }}
+            <div class="form-floating mb-3">
+                {{ form.email(class_="form-control", id_="floatingInput", type_="email") }}
+                <label for="floatingInput">Adres email</label>
+            </div>
+            <div class="form-floating">
+                {{ form.password(class_="form-control", id_="floatingPassword", type_="password") }}
+                <label for="floatingPassword">Hasło</label>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary mt-4 mb-2">Zaloguj się</button>
+        </form>
+        </main>
+    </div>
 
 {% endblock %}
