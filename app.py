@@ -48,15 +48,15 @@ def create_app():
     app.register_blueprint(bp_auth)
 
     # TEST DATA
-    @app.before_first_request
-    def create_test_data():
-        from models import Account, Currency, SubAccount
+    # @app.before_first_request
+    # def create_test_data():
+        # from models import Account, Currency, SubAccount
 
         # --------------------------- phase one ------------------------------
         # account1 = Account(active=True, created_at=datetime.datetime.now())
         # account2 = Account(active=True, created_at=datetime.datetime.now())
         #
-        # currency1 = Currency(name='zł', exchange_rate=1.0)
+        # currency1 = Currency(name='pln', exchange_rate=1.0)
         # currency2 = Currency(name='eur', exchange_rate=4.68)
         # currency3 = Currency(name='usd', exchange_rate=4.61)
         #
