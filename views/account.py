@@ -21,7 +21,12 @@ def get(account_id=0, currency_name='pln'):
     if not sub_account:
         abort(404)
 
-#, currency_id=currency.id
-    return render_template('account.html', currency=currency, sub_account=sub_account)
+    sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
+    currency_list = []
+    for sa in sub_accounts:
+        currency = Currency.query.filter_by(id=sa.currency_id).first()
+        currency_list.append(currency.name)
+
+    return render_template('account.html', currency=currency, sub_account=sub_account, currency_list=currency_list)
 
 
