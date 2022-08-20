@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body gap-2 mx-auto text-center">
                         <h5 class="card-title">Stan konta</h5>
-                        <h4>{{ sub_account.balance }} {# {{ currency.name }} #}PLN</h4>
+                        <h4>{{ sub_account.balance }} {{ currency.name.upper() }} </h4>
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Zmień walutę
                         </button>
@@ -41,17 +41,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        Siemano
+                        <img class="img" width="350px" height="300px" src="{{ url_for('static', filename='img/bank-hamster.jpg' ) }}" alt="">
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-2 mx-auto">
 
-            <div class="col-md-11">
+            <div class="col-md">
                 <div class="card">
                     <div class="card-header">Ale mamy esse</div>
                     <div class="card-body">Co nie</div>
@@ -79,9 +79,15 @@
             </div>
         </div>
     </div>
-    </div>
+    </div
+<div id="sub_accounts" data-subaccounts='{{ sub_accounts }}'></div>
+{% endblock %}
 
+{% block scripts %}
 
+    <!-- CHARTJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="{{ url_for('static', filename='chart-script.js') }}"></script>
 
 
 {% endblock %}

@@ -21,6 +21,7 @@ def get(account_id=0, currency_name='pln'):
     if not sub_account:
         abort(404)
 
+#, currency_id=currency.id
     return render_template('account.html', currency=currency, sub_account=sub_account)
 
 

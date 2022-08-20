@@ -34,3 +34,8 @@ const myChart = new Chart(ctx, {
     }
 });
 
+$().ready(function () {
+    //let sub_accounts = JSON.parse();
+    console.log(document.getElementById("sub_accounts").dataset.subaccounts[0]);
+});
+
