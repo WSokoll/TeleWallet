@@ -44,7 +44,8 @@
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <img class="img" width="350px" height="300px" src="{{ url_for('static', filename='img/bank-hamster.jpg' ) }}" alt="">
+                        <img class="img" width="350px" height="300px"
+                             src="{{ url_for('static', filename='img/bank-hamster.jpg' ) }}" alt="">
                     </div>
                 </div>
             </div>
@@ -69,25 +70,70 @@
         </div>
         <div class="offcanvas-body small">
             <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action active" aria-current="true">
-                    PLN
-                </button>
-                <button type="button" class="list-group-item list-group-item-action">EUR</button>
-                <button type="button" class="list-group-item list-group-item-action">CHF</button>
-                <button type="button" class="list-group-item list-group-item-action" disabled>USD</button>
-                <button type="button" class="list-group-item list-group-item-action" disabled>JPY</button>
             </div>
         </div>
     </div>
     </div
-<div id="sub_accounts" data-subaccounts='{{ sub_accounts }}'></div>
 {% endblock %}
 
 {% block scripts %}
 
     <!-- CHARTJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script src="{{ url_for('static', filename='chart-script.js') }}"></script>
+    <script>
+        $().ready(function () {
+            let id = {{ sub_account.account_id }};
+            //chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            //populating the currency list in offcanvas
+            let list_curr = {{ currency_list|safe }};
+
+            for (let i in list_curr) {
+                let curr = list_curr[i];
+                $("<a>", {
+                    "class": "list-group-item list-group-item-action",
+                    text: curr.toUpperCase(),
+                    href: '/account/' + id + '/' + curr
+                }).appendTo(".list-group");
+                console.log(curr.toUpperCase());
+            }
+        });
+    </script>
 
 
 {% endblock %}

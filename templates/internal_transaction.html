@@ -40,7 +40,29 @@
     </div>
     {% block scripts %}
 
-        <script src="{{ url_for('static', filename='transaction-script.js') }}"></script>
+        <script>
+            $().ready(function () {
+
+                let stan = parseFloat($("#stan-konta").text());
+
+                $("#stan-po").text(stan);
+
+                $("#kwota").keyup(function () {
+                    let kwota = parseFloat($("#kwota").val());
+                    let wynik;
+                    if (kwota <= stan) {
+                        wynik = (stan - kwota).toString();
+                    } else if(isNaN(kwota)) {
+                        wynik = stan.toString();
+                    } else{
+                        wynik = "Nie posiadasz wystarczających środków";
+                    }
+                    $("#stan-po").text(wynik);
+                });
+
+
+            });
+        </script>
     {% endblock %}
 
 {% endblock %}
