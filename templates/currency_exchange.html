@@ -1,51 +1,73 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-  <form method="POST" action="{{  url_for("bp_exchange.get_post", account_id=sub_accounts[0].account_id) }}">
-    {{ form.csrf_token }}
-
-    {{ form.currency_from.label(class_="form-label")  }}:
-    {{ form.currency_from (class_="form-control") }}
-
-    {{ form.currency_to.label(class_="form-label")  }}:
-    {{ form.currency_to (class_="form-control") }}
-
-    {{ form.value_from.label(class_="form-label")  }}:
-    {{ form.value_from (class_="form-control") }}
-
-    {{ form.value_to.label(class_="form-label")  }}:
-    {{ form.value_to (class_="form-control") }}
-
-    <button type="submit" class="btn btn-primary mt-4">
-      Wymień
-    </button>
-  </form>
+    <div class="container col-6 mx-auto rounded">
+        <h3 class="text-center mb-3">Wymiana walut</h3>
+        <form method="POST" action="{{ url_for("bp_exchange.get_post", account_id=sub_accounts[0].account_id) }}">
+            {{ form.csrf_token }}
+            <div class="row">
+                <div class="col text-center">
+                    {{ form.currency_from.label(class_="form-label") }}
+                    {{ form.currency_from (class_="form-control") }}
+                </div>
+                <div class="col text-center">
+                    {{ form.currency_to.label(class_="form-label") }}:
+                    {{ form.currency_to (class_="form-control") }}
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col text-center">
+                    {{ form.value_from.label(class_="form-label") }}:
+                    {{ form.value_from (class_="form-control", id_="kwota") }}
+                </div>
+                <div class="col text-center">
+                    {{ form.value_to.label(class_="form-label") }}:
+                    {{ form.value_to (class_="form-control", id_="kwota-po") }}
+                </div>
+            </div>
+            <div class="text-center mt-4 mx-auto">
+                <button type="submit" class="btn btn-primary">
+                    Wymień
+                </button>
+                <a class="btn btn-secondary"
+                   href="{{ url_for("bp_account.get", account_id=account_id, currency_name='pln') }}">Powrót</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 {% block scripts %}
-  <script>
-    $().ready(function () {
-      let currency_from_select = document.getElementById('currency_from');
-      let currency_to_select = document.getElementById('currency_to');
-      let account_id = {{ sub_accounts[0].account_id }};
+    <script>
+        $().ready(function () {
+            let currency_from_select = document.getElementById('currency_from');
+            let currency_to_select = document.getElementById('currency_to');
+            let account_id = {{ sub_accounts[0].account_id }};
 
-      currency_from_select.onchange = function() {
-        let currency = currency_from_select.value;
+            currency_from_select.onchange = function () {
+                let currency = currency_from_select.value;
 
-        fetch('/exchange/' + account_id + '/' + currency + '/other').then(function(response) {
-          response.json().then(function(data){
-            let optionHTML = '';
+                fetch('/exchange/' + account_id + '/' + currency + '/other').then(function (response) {
+                    response.json().then(function (data) {
+                        let optionHTML = '';
 
-            for(let cu of data.other){
-                optionHTML += '<option value="' + cu + '">' + cu + '</option>';
+                        for (let cu of data.other) {
+                            optionHTML += '<option value="' + cu + '">' + cu + '</option>';
+                        }
+
+                        currency_to_select.innerHTML = optionHTML;
+                    })
+                });
             }
-
-            currency_to_select.innerHTML = optionHTML;
-          })
+            $("#kwota").keyup(function () {
+                let kwota = parseFloat($("#kwota").val());
+                let wynik = kwota * 5;
+                $("#kwota-po").val(wynik);
+            });
+            $(".form-control option").each(function () {
+                capitalize = $(this).text();
+                $(this).text(capitalize.toUpperCase());
+            });
         });
-      }
-    });
-  </script>
+    </script>
 
 {% endblock %}

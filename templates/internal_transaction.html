@@ -1,15 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container-xxl">
-        <h1>Transakcja wewnętrzna</h1>
+    <div class="container col-6 mx-auto rounded">
+        <div class="text-center">
+            <h1>Transakcja wewnętrzna</h1>
 
-        <h4>Waluta: </h4>
-        <h4>{{ currency.name.upper() }}</h4>
-
-        <h4>Stan twojego konta: </h4>
-        <h4 id="stan-konta">{{ sub_account.balance }}</h4>
-
+            <h4>Aktualny stan konta: {{ sub_account.balance }} {{ currency.name.upper() }}</h4>
+        </div>
         <form method="POST"
               action="{{ url_for('bp_transaction.get_post_internal', account_id=sub_account.account_id, currency_name=currency.name) }}">
             {{ form.csrf_token }}
@@ -29,8 +26,8 @@
                 {{ form.value.label(class_="form-label") }}:
                 {{ form.value (class_="form-control", id_="kwota", type_="text") }}
             </div>
-            <h5 class="mt-2">Stan konta po przelewie:</h5><h6 id="stan-po"></h6>
-            <button type="submit" class="btn btn-primary mt-3 mb-2">
+            <h5 class="mt-2 text-center">Stan konta po przelewie:</h5><h6 id="stan-po" class="text-center"></h6>
+            <button type="submit" class="btn btn-primary mt-3 mb-2 mx-auto">
                 Wyślij przelew
             </button>
 
@@ -43,18 +40,18 @@
         <script>
             $().ready(function () {
 
-                let stan = parseFloat($("#stan-konta").text());
-
-                $("#stan-po").text(stan);
+                let stan = {{ sub_account.balance }};
+                let waluta = '{{ currency.name.upper() }}';
+                $("#stan-po").text(stan + " " + waluta);
 
                 $("#kwota").keyup(function () {
                     let kwota = parseFloat($("#kwota").val());
                     let wynik;
                     if (kwota <= stan) {
-                        wynik = (stan - kwota).toString();
-                    } else if(isNaN(kwota)) {
-                        wynik = stan.toString();
-                    } else{
+                        wynik = (stan - kwota).toString() + " " + waluta;
+                    } else if (isNaN(kwota)) {
+                        wynik = stan.toString() + " " + waluta;
+                    } else {
                         wynik = "Nie posiadasz wystarczających środków";
                     }
                     $("#stan-po").text(wynik);

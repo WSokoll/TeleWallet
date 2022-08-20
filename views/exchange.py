@@ -22,16 +22,22 @@ def get_post(account_id=0):
 
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
     currencies = []
+    exchange_rates = []
     for sa in sub_accounts:
         currencies.append(Currency.query.filter_by(id=sa.currency_id).first())
 
+    # TODO: coś z tym niżej? przekazanie do frontu tego i wyświetlanie np. kursu, zależnie od pola selected po lewej
+    # TODO: pole zmienia się już dynamicznie, ale potrzeba kursu aktualnej waluty wybranej z pola po lewej
     currency_names = [c.name for c in currencies]
+    for c in currencies:
+        exchange_rates.append((c.name, c.exchange_rate))
+    print(exchange_rates)
 
     class ExchangeForm(FlaskForm):
-        currency_from = SelectField('Z', validators=[InputRequired()], choices=currency_names)
-        currency_to = SelectField('Na', validators=[InputRequired()], choices=currency_names)
-        value_from = StringField('Wartość przed', validators=[InputRequired(), Regexp(r'^[0-9.]*$')])
-        value_to = StringField('Wartość po', render_kw={'readonly': True}, validators=[Regexp(r'^[0-9.]*$')])
+        currency_from = SelectField('Waluta źródłowa:', validators=[InputRequired()], choices=currency_names)
+        currency_to = SelectField('Waluta docelowa', validators=[InputRequired()], choices=currency_names)
+        value_from = StringField('Wartość przed wymianą', validators=[InputRequired(), Regexp(r'^[0-9.]*$')])
+        value_to = StringField('Wartość po wymianie', render_kw={'readonly': True}, validators=[Regexp(r'^[0-9.]*$')])
 
     form = ExchangeForm()
     form.value_from.data = '0.0'
@@ -60,14 +66,15 @@ def get_post(account_id=0):
             db.session.add(exchange)
 
         flash('Wymiana zakończona sukcesem.')
-        return redirect(url_for('bp_account.get', account_id=account_id, currency_name='pl'))
+        return redirect(url_for('bp_account.get', account_id=account_id, currency_name='pln'))
 
     elif form.is_submitted():
         for field_name, errors in form.errors.items():
             for err in errors:
                 flash(f"{form._fields[field_name].label.text}: {err}", 'error')
 
-    return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies)
+    return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies,
+                           account_id=account_id)
 
 
 @bp.route('/exchange/<account_id>/<currency_name>/other')

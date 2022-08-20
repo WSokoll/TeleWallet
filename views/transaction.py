@@ -25,9 +25,9 @@ def get_post_internal(account_id=0, currency_name='pl'):
         abort(404)
 
     class InternalTransactionForm(FlaskForm):
-        username_from = StringField('Od', validators=[InputRequired(), Length(max=255)], render_kw={'readonly': True})
-        username_to = StringField('Do', validators=[InputRequired(), Length(max=255), UserExistsValidator()])
-        title = StringField('Tytuł', validators=[Length(max=255)])
+        username_from = StringField('Nadawca', validators=[InputRequired(), Length(max=255)], render_kw={'readonly': True})
+        username_to = StringField('Odbiorca', validators=[InputRequired(), Length(max=255), UserExistsValidator()], render_kw={'placeholder': 'Imię Nazwisko'})
+        title = StringField('Tytuł przelewu', validators=[Length(max=255)])
         value = StringField('Kwota przelewu', validators=[InputRequired(), ValueVSOwnedValidator()])
         owned_value = HiddenField()
 
