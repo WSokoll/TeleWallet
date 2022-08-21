@@ -7,7 +7,7 @@ bp = Blueprint('bp_account', __name__, template_folder='templates')
 
 
 # Show account page
-@bp.route('/account/<int:account_id>/<string:currency_name>', methods=['GET'], defaults={'currency_name': 'pln'})
+@bp.route('/account/<int:account_id>/<string:currency_name>', methods=['GET'])
 @login_required
 def get(account_id=0, currency_name='pln'):
     if account_id == 0:
