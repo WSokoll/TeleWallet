@@ -17,21 +17,17 @@ def get_post(account_id=0):
     if account_id == 0:
         abort(404)
 
-    # TODO:  walidator dostępnej kwoty...(jakoś we froncie? z wykożystaniem sub_accounts i currencies)
-    # TODO: dynamicznie zmieniające sie pole value_to w zależności od wpisanej kwoty value_from
+    # TODO: jak chcesz zrobić wyświetlanie kursu, to trzeba to zrobić tak samo jak zrobiłem z tym value_to. Tzn tak:
+    #       - stworzyć jakieś nagłówki, czy coś takiego na wartości i nadać im id
+    #       - w skrypcie znaleźć je po tym id i nadać im wartości - zrobić to co ja w linijkach 79-86 z tym, że do
+    #         value_from dać jedynke. (zamiast '+ value_from.toString()' dać '+ "1"')
 
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
     currencies = []
-    exchange_rates = []
     for sa in sub_accounts:
         currencies.append(Currency.query.filter_by(id=sa.currency_id).first())
 
-    # TODO: coś z tym niżej? przekazanie do frontu tego i wyświetlanie np. kursu, zależnie od pola selected po lewej
-    # TODO: pole zmienia się już dynamicznie, ale potrzeba kursu aktualnej waluty wybranej z pola po lewej
     currency_names = [c.name for c in currencies]
-    for c in currencies:
-        exchange_rates.append((c.name, c.exchange_rate))
-    print(exchange_rates)
 
     class ExchangeForm(FlaskForm):
         currency_from = SelectField('Waluta źródłowa:', validators=[InputRequired()], choices=currency_names)
@@ -40,30 +36,29 @@ def get_post(account_id=0):
         value_to = StringField('Wartość po wymianie', render_kw={'readonly': True}, validators=[Regexp(r'^[0-9.]*$')])
 
     form = ExchangeForm()
-    form.value_from.data = '0.0'
-    form.value_to.data = '0.0'
 
     if form.validate_on_submit():
-        currency_from = Currency.query.filter_by(name=form.currency_from.data).first()
-        currency_to = Currency.query.filter_by(name=form.currency_to.data).first()
+        currency_from = Currency.query.filter_by(name=form.currency_from.data.lower()).first()
+        currency_to = Currency.query.filter_by(name=form.currency_to.data.lower()).first()
 
-        sub_account_from = SubAccount.query.filter_by(account_id=account_id, currency_id=currency_from.id)
-        sub_account_to = SubAccount.query.filter_by(account_id=account_id, currency_id=currency_to.id)
+        sub_account_from = SubAccount.query.filter_by(account_id=account_id, currency_id=currency_from.id).first()
+        sub_account_to = SubAccount.query.filter_by(account_id=account_id, currency_id=currency_to.id).first()
 
-        value_to = float(form.value_from.data) * currency_from.exchange_rate * currency_to.exchange_rate
+        if float(form.value_from.data) > sub_account_from.balance:
+            flash('Nie posiadasz wystarczających środków.')
+            return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies)
 
-        # will it work (current_user.id)????
         exchange = CurrencyExchange(user_id=current_user.id,
                                     currency_from=currency_from.id,
                                     currency_to=currency_to.id,
                                     value_old=float(form.value_from.data),
-                                    value_new=value_to)
+                                    value_new=float(form.value_to.data))
 
-        with db.session.begin():
-            sub_account_from.balance = sub_account_from.balance - float(form.value_from.data)
-            sub_account_to.balance = sub_account_to.balance + value_to
+        sub_account_from.balance = sub_account_from.balance - float(form.value_from.data)
+        sub_account_to.balance = sub_account_to.balance + float(form.value_to.data)
 
-            db.session.add(exchange)
+        db.session.add(exchange)
+        db.session.commit()
 
         flash('Wymiana zakończona sukcesem.')
         return redirect(url_for('bp_account.get', account_id=account_id, currency_name='pln'))
@@ -73,8 +68,7 @@ def get_post(account_id=0):
             for err in errors:
                 flash(f"{form._fields[field_name].label.text}: {err}", 'error')
 
-    return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies,
-                           account_id=account_id)
+    return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies)
 
 
 @bp.route('/exchange/<account_id>/<currency_name>/other')
@@ -89,3 +83,20 @@ def rest_currencies(account_id=0, currency_name=''):
         currencies.append(Currency.query.filter_by(id=sa.currency_id).first())
 
     return jsonify({'other': [c.name for c in currencies if c.name != currency_name]})
+
+
+@bp.route('/exchange/<currency_from_name>/<currency_to_name>/<value_from>')
+@login_required
+def value_to(currency_from_name='pln', currency_to_name='pln', value_from=''):
+    if value_from == '':
+        abort(404)
+
+    currency_from = Currency.query.filter_by(name=currency_from_name).first()
+    currency_to = Currency.query.filter_by(name=currency_to_name).first()
+
+    if not currency_from or not currency_to:
+        abort(404)
+
+    value_to = round(float(value_from) * currency_from.exchange_rate / currency_to.exchange_rate, 2)
+
+    return jsonify({'value_to': value_to})

@@ -30,7 +30,7 @@
                     Wymień
                 </button>
                 <a class="btn btn-secondary"
-                   href="{{ url_for("bp_account.get", account_id=account_id, currency_name='pln') }}">Powrót</a>
+                   href="{{ url_for("bp_account.get", account_id=sub_accounts[0].account_id, currency_name='pln') }}">Powrót</a>
             </div>
         </form>
     </div>
@@ -43,15 +43,27 @@
             let currency_to_select = document.getElementById('currency_to');
             let account_id = {{ sub_accounts[0].account_id }};
 
+            fetch('/exchange/' + account_id + '/' + currency_from_select.value.toLowerCase() + '/other').then(function (response) {
+                  response.json().then(function (data) {
+                      let optionHTML = '';
+
+                      for (let cu of data.other) {
+                          optionHTML += '<option value="' + cu + '">' + cu.toUpperCase() + '</option>';
+                      }
+
+                      currency_to_select.innerHTML = optionHTML;
+                  })
+            });
+
             currency_from_select.onchange = function () {
                 let currency = currency_from_select.value;
 
-                fetch('/exchange/' + account_id + '/' + currency + '/other').then(function (response) {
+                fetch('/exchange/' + account_id + '/' + currency.toLowerCase() + '/other').then(function (response) {
                     response.json().then(function (data) {
                         let optionHTML = '';
 
                         for (let cu of data.other) {
-                            optionHTML += '<option value="' + cu + '">' + cu + '</option>';
+                            optionHTML += '<option value="' + cu + '">' + cu.toUpperCase() + '</option>';
                         }
 
                         currency_to_select.innerHTML = optionHTML;
@@ -59,12 +71,23 @@
                 });
             }
             $("#kwota").keyup(function () {
-                let kwota = parseFloat($("#kwota").val());
-                let wynik = kwota * 5;
-                $("#kwota-po").val(wynik);
+                let value_from = parseFloat($("#kwota").val());
+                if (isNaN(value_from)){
+                    let value_to = 0;
+                    $("#kwota-po").val(value_to);
+                }else{
+                    fetch('/exchange/' + currency_from_select.value.toLowerCase() + '/'
+                        + currency_to_select.value.toLowerCase() + '/' + value_from.toString()).
+                    then(function (response) {
+                        response.json().then(function (data) {
+                            let value_to = data.value_to;
+                            $("#kwota-po").val(value_to);
+                        })
+                    });
+                }
             });
             $(".form-control option").each(function () {
-                capitalize = $(this).text();
+                let capitalize = $(this).text();
                 $(this).text(capitalize.toUpperCase());
             });
         });
