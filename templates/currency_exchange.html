@@ -18,11 +18,11 @@
             <div class="row mt-2">
                 <div class="col text-center">
                     {{ form.value_from.label(class_="form-label") }}:
-                    {{ form.value_from (class_="form-control", id_="kwota") }}
+                    {{ form.value_from (class_="form-control", id_="value") }}
                 </div>
                 <div class="col text-center">
                     {{ form.value_to.label(class_="form-label") }}:
-                    {{ form.value_to (class_="form-control", id_="kwota-po") }}
+                    {{ form.value_to (class_="form-control", id_="value-after") }}
                 </div>
             </div>
             <div class="text-center mt-4 mx-auto">
@@ -70,18 +70,18 @@
                     })
                 });
             }
-            $("#kwota").keyup(function () {
-                let value_from = parseFloat($("#kwota").val());
+            $("#value").keyup(function () {
+                let value_from = parseFloat($("#value").val());
                 if (isNaN(value_from)){
                     let value_to = 0;
-                    $("#kwota-po").val(value_to);
+                    $("#value-after").val(value_to);
                 }else{
                     fetch('/exchange/' + currency_from_select.value.toLowerCase() + '/'
                         + currency_to_select.value.toLowerCase() + '/' + value_from.toString()).
                     then(function (response) {
                         response.json().then(function (data) {
                             let value_to = data.value_to;
-                            $("#kwota-po").val(value_to);
+                            $("#value-after").val(value_to);
                         })
                     });
                 }

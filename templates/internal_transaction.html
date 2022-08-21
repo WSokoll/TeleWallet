@@ -24,16 +24,16 @@
             </div>
             <div class="mb-3">
                 {{ form.value.label(class_="form-label") }}:
-                {{ form.value (class_="form-control", id_="kwota", type_="text") }}
+                {{ form.value (class_="form-control", id_="exchange-amount", type_="text") }}
             </div>
-            <h5 class="mt-2 text-center">Stan konta po przelewie:</h5><h6 id="stan-po" class="text-center"></h6>
+            <h5 class="mt-2 text-center">Stan konta po przelewie:</h5><h6 id="balance-after" class="text-center"></h6>
             <button type="submit" class="btn btn-primary mt-3 mb-2 mx-auto">
                 Wyślij przelew
             </button>
 
         </form>
         <a class="btn btn-secondary"
-           href="{{ url_for("bp_account.get", account_id=sub_account.account_id, currency_name=currency.name) }}">Powrót</a>
+           href="{{ url_for("bp_account.get", account_id=sub_account.account_id, currency_name='pln') }}">Powrót</a>
     </div>
 {% endblock %}
 
@@ -42,21 +42,21 @@
     <script>
         $().ready(function () {
 
-            let stan = {{ sub_account.balance }};
-            let waluta = '{{ currency.name.upper() }}';
-            $("#stan-po").text(stan + " " + waluta);
+            let balance = {{ sub_account.balance }};
+            let currency_ = '{{ currency.name.upper() }}';
+            $("#balance-after").text(balance + " " + currency_);
 
-            $("#kwota").keyup(function () {
-                let kwota = parseFloat($("#kwota").val());
-                let wynik;
-                if (kwota <= stan) {
-                    wynik = (stan - kwota).toString() + " " + waluta;
-                } else if (isNaN(kwota)) {
-                    wynik = stan.toString() + " " + waluta;
+            $("#exchange-amount").keyup(function () {
+                let value = parseFloat($("#exchange-amount").val());
+                let outcome;
+                if (value <= balance) {
+                    outcome = (balance - value).toString() + " " + currency_;
+                } else if (isNaN(value)) {
+                    outcome = balance.toString() + " " + currency_;
                 } else {
-                    wynik = "Nie posiadasz wystarczających środków";
+                    outcome = "Nie posiadasz wystarczających środków";
                 }
-                $("#stan-po").text(wynik);
+                $("#balance-after").text(outcome);
             });
 
 

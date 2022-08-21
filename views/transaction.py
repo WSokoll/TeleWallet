@@ -65,7 +65,7 @@ def get_post_internal(account_id=0, currency_name='pl'):
         db.session.add(transaction)
         db.session.commit()
 
-        flash('Tranzakcja zakończona sukcesem.')
+        flash('Transakcja zakończona sukcesem.')
         return redirect(url_for('bp_account.get', account_id=account_id, currency_name=currency_name))
 
     elif form.is_submitted():

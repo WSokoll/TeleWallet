@@ -37,14 +37,16 @@
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <ul class="navbar-nav me-auto mb-2 mb-md-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/home">Strona domowa</a>
+                                <a class="nav-link active" aria-current="page" href="{{ url_for('bp_home.get') }}">Strona domowa</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">O nas</a>
                             </li>
+                            {% if current_user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Login</a>
+                                <a class="nav-link" href="{{ url_for('bp_auth.logout') }}" tabindex="-1">Wyloguj się</a>
                             </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

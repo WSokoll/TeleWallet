@@ -38,7 +38,7 @@ def login():
             login_user(user)
             flash('Zalogowano')
 
-            return redirect(url_for('bp_account.get', account_id=user.account_id))
+            return redirect(url_for('bp_account.get', account_id=user.account_id, currency_name= 'pln'))
         else:
             flash('Nieprawidłowe dane logowania')
             return render_template('login.html', form=form)

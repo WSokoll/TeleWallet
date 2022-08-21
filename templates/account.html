@@ -21,13 +21,13 @@
                         <div>
                             <a class="btn btn-secondary"
                                href="{{ url_for("bp_transaction.get_post_internal", account_id=sub_account.account_id, currency_name=currency.name) }}">
-                                Internal transaction
+                                Transakcja wewnętrzna
                             </a>
                         </div>
                         <div>
                             <a class="btn btn-secondary"
                                href="{{ url_for("bp_exchange.get_post", account_id=sub_account.account_id) }}">
-                                Currency exchange
+                                Wymiana walut
                             </a>
                         </div>
                     </div>
