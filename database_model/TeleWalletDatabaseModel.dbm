@@ -213,7 +213,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="CurrencyExchange" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+<table name="CurrencyExchange" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="760" y="440"/>
@@ -235,6 +235,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="value_new" not-null="true">
 		<type name="double precision" length="0"/>
+	</column>
+	<column name="exchange_date" not-null="true">
+		<type name="date" length="0"/>
 	</column>
 	<constraint name="CurrencyExchange_pk" type="pk-constr" table="public.&quot;CurrencyExchange&quot;">
 		<columns names="id" ref-type="src-columns"/>
