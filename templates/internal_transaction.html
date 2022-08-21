@@ -35,31 +35,31 @@
         <a class="btn btn-secondary"
            href="{{ url_for("bp_account.get", account_id=sub_account.account_id, currency_name=currency.name) }}">Powrót</a>
     </div>
-    {% block scripts %}
+{% endblock %}
 
-        <script>
-            $().ready(function () {
+{% block scripts %}
 
-                let stan = {{ sub_account.balance }};
-                let waluta = '{{ currency.name.upper() }}';
-                $("#stan-po").text(stan + " " + waluta);
+    <script>
+        $().ready(function () {
 
-                $("#kwota").keyup(function () {
-                    let kwota = parseFloat($("#kwota").val());
-                    let wynik;
-                    if (kwota <= stan) {
-                        wynik = (stan - kwota).toString() + " " + waluta;
-                    } else if (isNaN(kwota)) {
-                        wynik = stan.toString() + " " + waluta;
-                    } else {
-                        wynik = "Nie posiadasz wystarczających środków";
-                    }
-                    $("#stan-po").text(wynik);
-                });
+            let stan = {{ sub_account.balance }};
+            let waluta = '{{ currency.name.upper() }}';
+            $("#stan-po").text(stan + " " + waluta);
 
-
+            $("#kwota").keyup(function () {
+                let kwota = parseFloat($("#kwota").val());
+                let wynik;
+                if (kwota <= stan) {
+                    wynik = (stan - kwota).toString() + " " + waluta;
+                } else if (isNaN(kwota)) {
+                    wynik = stan.toString() + " " + waluta;
+                } else {
+                    wynik = "Nie posiadasz wystarczających środków";
+                }
+                $("#stan-po").text(wynik);
             });
-        </script>
-    {% endblock %}
 
+
+        });
+    </script>
 {% endblock %}
