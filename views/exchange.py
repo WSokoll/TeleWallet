@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, render_template, abort, flash, redirect, url_for, jsonify
 from flask_login import current_user, login_required
 from flask_wtf import FlaskForm
@@ -52,7 +54,8 @@ def get_post(account_id=0):
                                     currency_from=currency_from.id,
                                     currency_to=currency_to.id,
                                     value_old=float(form.value_from.data),
-                                    value_new=float(form.value_to.data))
+                                    value_new=float(form.value_to.data),
+                                    exchange_date=datetime.now())
 
         sub_account_from.balance = sub_account_from.balance - float(form.value_from.data)
         sub_account_to.balance = sub_account_to.balance + float(form.value_to.data)

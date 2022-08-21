@@ -88,3 +88,4 @@ class CurrencyExchange(db.Model):
     currency_to = db.Column(db.Integer(), db.ForeignKey('Currency.id'), nullable=False)
     value_old = db.Column(DOUBLE_PRECISION, nullable=False)
     value_new = db.Column(DOUBLE_PRECISION, nullable=False)
+    exchange_date = db.Column(db.DateTime(), nullable=False)
