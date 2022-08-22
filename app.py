@@ -54,7 +54,7 @@ def create_app():
     # TEST DATA
     # @app.before_first_request
     # def create_test_data():
-        # from models import Account, Currency, SubAccount
+    #     from models import Account, Currency, SubAccount
 
         # --------------------------- phase one ------------------------------
         # account1 = Account(active=True, created_at=datetime.datetime.now())
