@@ -45,7 +45,7 @@ def get(account_id=0, currency_name='pln'):
     history = []
     history.extend(in_transactions)
     history.extend(exchanges)
-    history.sort(key=lambda x: x.transaction_date if hasattr(x, 'transaction_date') else x.exchange_date)
+    history.sort(key=lambda x: x.transaction_date if hasattr(x, 'transaction_date') else x.exchange_date, reverse=True)
 
     return render_template('account.html', currency=currency, sub_account=sub_account, currency_list=currency_list,
                            history=history)
