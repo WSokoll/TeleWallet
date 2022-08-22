@@ -57,6 +57,23 @@
                     <div class="card-header">Ale mamy esse</div>
                     <div class="card-body">Co nie</div>
                 </div>
+
+                Lol, że to działa XD  - HISTORIA<br>
+                {% for item in history %}
+                    {% if item.transaction_date %}
+                        {% if item.transaction_to == current_user.id %}
+                            Tranzakcja wewnętrzna na plus! {{ item.transaction_date }} <br>
+                        {% else %}
+                            Tranzakcja wewnętrzna na minus :( {{ item.transaction_date }} <br>
+                        {% endif %}
+                    {% else %}
+                        {% if item.currency_to == currency.id %}
+                            Wymiana waluty na plus! {{ item.exchange_date }} <br>
+                        {% else %}
+                            Wymiana waluty na minus :( {{ item.exchange_date }} <br>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
