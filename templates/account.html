@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body gap-2 mx-auto text-center">
                         <h5 class="card-title">Stan konta</h5>
-                        <h4>{{ sub_account.balance }} {{ currency.name.upper() }} </h4>
+                        <h4>{{ "%.2f"|format(sub_account.balance) }} {{ currency.name.upper() }} </h4>
                         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">Zmień walutę
                         </button>
