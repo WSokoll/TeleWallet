@@ -70,9 +70,10 @@
                         currency_to_select.innerHTML = optionHTML;
                     })
                 });
-                //here
+                let temp = '1';
                 fetch('/exchange/' + currency_from_select.value.toLowerCase() + '/'
-                    + currency_to_select.value.toLowerCase() + '/1').then(function (response) {
+                    + currency_to_select.value.toLowerCase() + '/' + temp).
+                then(function (response) {
                     response.json().then(function (data) {
                         let value_to = data.value_to;
                         $("#exchange-rate").text(value_to.toString());
