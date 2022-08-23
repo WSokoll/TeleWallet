@@ -96,7 +96,11 @@
             </div>
         </footer>
 
-        <script src="{{ url_for('static', filename = 'js/delete_flash') }}"></script>
+        <script>
+          function delete_flash(flash){
+            $(flash).parent().remove();
+          }
+        </script>
 
         </body>
     {%- endblock html %}
