@@ -25,7 +25,6 @@
                     {{ form.value_to (class_="form-control", id_="value-after") }}
                 </div>
             </div>
-            <div class="mx-auto text-center"><h4 id="exchange-rate"></h4></div>
             <div class="text-center mt-4 mx-auto">
                 <button type="submit" class="btn btn-primary">
                     Wymień
@@ -68,15 +67,6 @@
                         }
 
                         currency_to_select.innerHTML = optionHTML;
-                    })
-                });
-                let temp = '1';
-                fetch('/exchange/' + currency_from_select.value.toLowerCase() + '/'
-                    + currency_to_select.value.toLowerCase() + '/' + temp).
-                then(function (response) {
-                    response.json().then(function (data) {
-                        let value_to = data.value_to;
-                        $("#exchange-rate").text(value_to.toString());
                     })
                 });
             }
