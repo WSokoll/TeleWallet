@@ -33,9 +33,9 @@ def get(account_id=0, currency_name='pln'):
     user = User.query.filter_by(account_id=account_id).first()
 
     in_transactions = InternalTransaction.query.filter(or_(and_(InternalTransaction.transaction_from == user.id,
-                                                                InternalTransaction.currency_id == currency.id)),
+                                                                InternalTransaction.currency_id == currency.id),
                                                            and_(InternalTransaction.transaction_to == user.id,
-                                                                InternalTransaction.currency_id == currency.id)).\
+                                                                InternalTransaction.currency_id == currency.id))).\
         order_by(InternalTransaction.transaction_date).all()
 
     exchanges = CurrencyExchange.query.filter(or_(and_(CurrencyExchange.user_id == user.id,
