@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template, abort
-from flask_login import login_required
+from flask_login import login_required, current_user
+from flask_wtf import FlaskForm
 from sqlalchemy import or_, and_
+from wtforms import StringField
+from wtforms.validators import InputRequired, Regexp
 
 from models import SubAccount, Currency, User, InternalTransaction, CurrencyExchange
 
@@ -8,7 +11,7 @@ bp = Blueprint('bp_account', __name__, template_folder='templates')
 
 
 # Show account page
-@bp.route('/account/<int:account_id>/<string:currency_name>', methods=['GET'])
+@bp.route('/account/<int:account_id>/<string:currency_name>', methods=['GET', 'POST'])
 @login_required
 def get(account_id=0, currency_name='pln'):
     if account_id == 0:
@@ -49,7 +52,30 @@ def get(account_id=0, currency_name='pln'):
     history.extend(exchanges)
     history.sort(key=lambda x: x.transaction_date if hasattr(x, 'transaction_date') else x.exchange_date, reverse=True)
 
+    # External transaction
+    class ExternalTransactionForm(FlaskForm):
+        value = StringField('Kwota doładowania', validators=[InputRequired(), Regexp(r'^[0-9.]*$')])
+
+    form = ExternalTransactionForm()
+
+    if form.validate_on_submit():
+
+        body = {
+          "id": 1010,
+          "amount": float(form.value.data),
+          "description": "Testing",
+          "crc": 3214,
+          "md5sum": "696160c3ca4b2ffbf1801036769a931a",     # TODO: jak wyliczać
+          "group": 150,
+          "return_url": "",                                 # TODO: url_for success
+          "return_error_url": "",                           # TODO: url_for error
+          "language": "pl",
+          "email": current_user.email,
+          "name": current_user.name,
+          "api_password": "p@$$w0rd#@!"
+        }
+
     return render_template('account.html', currency=currency, sub_account=sub_account, currency_list=currency_list,
-                           history=history)
+                           history=history, form=form)
 
 

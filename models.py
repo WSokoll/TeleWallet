@@ -79,6 +79,8 @@ class ExternalTransaction(db.Model):
     transaction_date = db.Column(db.DateTime(), nullable=False)
     name = db.Column(db.String(255))
 
+    # TODO: dodać pole confirmed (wyszukiwana i sprawdzana tranzakcja po przyciśnięciu powrotu do stronki)
+
 
 class CurrencyExchange(db.Model):
     __tablename__ = 'CurrencyExchange'
