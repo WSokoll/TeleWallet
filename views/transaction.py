@@ -18,7 +18,7 @@ bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 # Internal transaction page
 @bp.route('/transaction/internal/<account_id>/<string:currency_name>', methods=['GET', 'POST'])
 @login_required
-def get_post_internal(account_id=0, currency_name='pl'):
+def get_post_internal(account_id=0, currency_name='pln'):
     currencies = Currency.query.order_by(Currency.name).all()
 
     if account_id == 0 or currency_name not in [c.name for c in currencies]:
