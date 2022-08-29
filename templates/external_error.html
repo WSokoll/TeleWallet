@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container col-6 mx-auto rounded">
+        <div class="card rounded bg">
+            <div class="card-body text-center">
+                <h4 class="card-title">Transakcja zakończona niepowodzeniem.</h4>
+                <p class="card-text">Niestety podczas transakcji coś poszło nie tak, możesz powrócić do konta
+                    i spróbować ponownie.</p>
+                <div>
+                    <img src="https://i.giphy.com/media/ISOckXUybVfQ4/giphy.webp" alt="">
+                </div>
+                <a class="btn btn-danger mt-3" href="{{ url_for("bp_account.get", account_id=1, currency_name='pln') }}">
+                    Powrót do konta
+                </a>
+
+                {# TU TRZEBA PRZEKAZAC MU KONTO DO POWROTU account_id=sub_accounts[0].account_id #}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

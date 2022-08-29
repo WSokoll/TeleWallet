@@ -38,67 +38,77 @@
                     <div class="card-body text-center">
                         <h4 class="card-title">Historia transakcji</h4>
                         <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">Typ transakcji</th>
-                            <th scope="col">Kwota transakcji</th>
-                            <th scope="col">Tytuł</th>
-                            <th scope="col">Data transakcji</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                            <thead>
+                            <tr>
+                                <th scope="col">Typ transakcji</th>
+                                <th scope="col">Kwota transakcji</th>
+                                <th scope="col">Tytuł</th>
+                                <th scope="col">Data transakcji</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             {% for item in history %}
                                 <tr>
-                                {% if item.transaction_date %}
-                                    {% if item.transaction_to == current_user.id %}
+                                    {% if item.transaction_date %}
+                                        {% if item.transaction_to == current_user.id %}
                                             <td>Transakcja wewnętrzna</td>
-                                        <td class="text-success"><b>+{{ item.value }} {{ currency.name.upper() }}</b></td>
-                                        <td>{{ item.name }}</td>
+                                            <td class="text-success">
+                                                <b>+{{ item.value }} {{ currency.name.upper() }}</b></td>
+                                            <td>{{ item.name }}</td>
                                             <td>{{ item.transaction_date }}</td>
+                                        {% else %}
+                                            <td>Transakcja wewnętrzna</td>
+                                            <td class="text-danger"><b>-{{ item.value }} {{ currency.name.upper() }}</b>
+                                            </td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.transaction_date }}</td>
+                                        {% endif %}
                                     {% else %}
-                                            <td>Transakcja wewnętrzna</td>
-                                        <td class="text-danger"><b>-{{ item.value }} {{ currency.name.upper() }}</b></td>
-                                        <td>{{ item.name }}</td>
-                                            <td>{{ item.transaction_date }}</td>
-                                    {% endif %}
-                                {% else %}
-                                    {% if item.currency_to == currency.id %}
+                                        {% if item.currency_to == currency.id %}
 
                                             <td>Wymiana walut</td>
-                                            <td class="text-success"><b>+{{ item.value_new }} {{ currency.name.upper() }}</b></td>
-                                                                                <td></td>
+                                            <td class="text-success">
+                                                <b>+{{ item.value_new }} {{ currency.name.upper() }}</b></td>
+                                            <td></td>
                                             <td>{{ item.exchange_date }}</td>
-                                    {% else %}
+                                        {% else %}
 
                                             <td>Wymiana walut</td>
-                                            <td class="text-danger"><b>-{{ item.value_old }} {{ currency.name.upper() }}</b></td>
-                                                                                <td></td>
+                                            <td class="text-danger">
+                                                <b>-{{ item.value_old }} {{ currency.name.upper() }}</b></td>
+                                            <td></td>
                                             <td>{{ item.exchange_date }}</td>
 
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
                                 </tr>
                             {% endfor %}
-                        </tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-{#            <div class="col-md-4 ">#}
-{#                <div class="card">#}
-{#                    <div class="card-body">#}
-{#                        <img class="img d-block mx-auto w-auto h-auto mw-100 mh-100" width="350px" height="300px"#}
-{#                             src="{{ url_for('static', filename='img/bank-hamster.jpg' ) }}" alt="">#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
         </div>
         <div class="row mt-2 mx-auto">
 
             <div class="col-md">
-                <div class="card">
-                    <div class="card-header">Ale mamy esse</div>
-                    <div class="card-body">Co nie</div>
+                <div class="card text-center">
+                    <div class="card-header">Doładowanie konta (aktualnie jedyną wspieraną walutą jest PLN)</div>
+                    <div class="card-body">
+                        <form method="POST" action="#">
+                            <div class="row">
+                                <div class="col-md-4 mx-auto">
+                                    {{ form.value.label(class_="form-label") }}
+                                    <div class="input-group mb-1">
+                                        <span class="input-group-text">PLN</span>
+
+                                        {{ form.value (class_="form-control") }}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Doładuj konto</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
 

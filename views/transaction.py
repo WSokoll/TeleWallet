@@ -12,6 +12,7 @@ from validators import ValueVSOwnedValidator, UserExistsValidator
 
 bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 
+
 # TODO: transactions (database)
 
 
@@ -25,8 +26,10 @@ def get_post_internal(account_id=0, currency_name='pln'):
         abort(404)
 
     class InternalTransactionForm(FlaskForm):
-        username_from = StringField('Nadawca', validators=[InputRequired(), Length(max=255)], render_kw={'readonly': True})
-        username_to = StringField('Odbiorca', validators=[InputRequired(), Length(max=255), UserExistsValidator()], render_kw={'placeholder': 'Imię Nazwisko'})
+        username_from = StringField('Nadawca', validators=[InputRequired(), Length(max=255)],
+                                    render_kw={'readonly': True})
+        username_to = StringField('Odbiorca', validators=[InputRequired(), Length(max=255), UserExistsValidator()],
+                                  render_kw={'placeholder': 'Imię Nazwisko'})
         title = StringField('Tytuł przelewu', validators=[Length(max=255)])
         value = StringField('Kwota przelewu', validators=[InputRequired(), ValueVSOwnedValidator()])
         owned_value = HiddenField()
@@ -74,3 +77,16 @@ def get_post_internal(account_id=0, currency_name='pln'):
                 flash(f"{form._fields[field_name].label.text}: {err}", 'error')
 
     return render_template('internal_transaction.html', currency=currency, sub_account=sub_account_from, form=form)
+
+
+@bp.route('/transaction/external/success', methods=['GET'])
+@login_required
+def external_success_get():
+    return render_template('external_success.html')
+
+# TODO: przekazać o kontach żeby działały url_for dla przycisków powrotu do konta
+
+@bp.route('/transaction/external/error', methods=['GET'])
+@login_required
+def external_error_get():
+    return render_template('external_error.html')
