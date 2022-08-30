@@ -79,14 +79,23 @@ def get_post_internal(account_id=0, currency_name='pln'):
     return render_template('internal_transaction.html', currency=currency, sub_account=sub_account_from, form=form)
 
 
-@bp.route('/transaction/external/success', methods=['GET'])
+@bp.route('/transaction/external/success/<account_id>/<value>', methods=['GET'])
 @login_required
-def external_success_get():
-    return render_template('external_success.html')
+def get_external_success(account_id=0, value=None):
 
-# TODO: przekazać o kontach żeby działały url_for dla przycisków powrotu do konta
+    if account_id == 0 or not value:
+        abort(404)
 
-@bp.route('/transaction/external/error', methods=['GET'])
+    # TODO: dodanie przelewu...
+
+    return render_template('external_success.html', account_id=account_id)
+
+
+@bp.route('/transaction/external/error/<account_id>', methods=['GET'])
 @login_required
-def external_error_get():
-    return render_template('external_error.html')
+def get_external_error(account_id=0):
+
+    if account_id == 0:
+        abort(404)
+
+    return render_template('external_error.html', account_id=account_id)

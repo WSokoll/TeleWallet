@@ -11,7 +11,9 @@
                 <div>
                     <img src="https://i.giphy.com/media/foIUVRRggFTXNI5uuZ/giphy.webp" alt="">
                 </div>
-                <a class="btn btn-success mt-3" href="#">Powrót do konta</a>
+                <a class="btn btn-success mt-3" href="{{ url_for("bp_account.get", account_id=account_id, currency_name='pln') }}">
+                  Powrót do konta
+                </a>
             </div>
         </div>
 

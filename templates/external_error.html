@@ -11,11 +11,9 @@
                 <div>
                     <img src="https://i.giphy.com/media/ISOckXUybVfQ4/giphy.webp" alt="">
                 </div>
-                <a class="btn btn-danger mt-3" href="{{ url_for("bp_account.get", account_id=1, currency_name='pln') }}">
+                <a class="btn btn-danger mt-3" href="{{ url_for("bp_account.get", account_id=account_id, currency_name='pln') }}">
                     Powrót do konta
                 </a>
-
-                {# TU TRZEBA PRZEKAZAC MU KONTO DO POWROTU account_id=sub_accounts[0].account_id #}
             </div>
         </div>
 
