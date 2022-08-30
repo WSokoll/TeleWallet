@@ -19,11 +19,6 @@ def get_post(account_id=0):
     if account_id == 0:
         abort(404)
 
-    # TODO: jak chcesz zrobić wyświetlanie kursu, to trzeba to zrobić tak samo jak zrobiłem z tym value_to. Tzn tak:
-    #       - stworzyć jakieś nagłówki, czy coś takiego na wartości i nadać im id
-    #       - w skrypcie znaleźć je po tym id i nadać im wartości - zrobić to co ja w linijkach 79-86 z tym, że do
-    #         value_from dać jedynke. (zamiast '+ value_from.toString()' dać '+ "1"')
-
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
     currencies = []
     for sa in sub_accounts:
