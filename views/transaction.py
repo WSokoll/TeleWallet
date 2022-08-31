@@ -89,7 +89,7 @@ def get_external_success(account_id, value):
     transaction = ExternalTransaction(
         transaction_from='tpay',
         transaction_to=current_user.id,
-        currency_id='pln',
+        currency_id=1,
         value=float(value),
         transaction_date=datetime.now(),
         name='tpay doładowanie'

@@ -50,7 +50,13 @@
                             {% for item in history %}
                                 <tr>
                                     {% if item.transaction_date %}
-                                        {% if item.transaction_to == current_user.id %}
+                                        {% if item.transaction_from == "tpay" %}
+                                            <td>Doładowanie konta</td>
+                                            <td class="text-success">
+                                                <b>+{{ item.value }} {{ currency.name.upper() }}</b></td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.transaction_date }}</td>
+                                        {% elif item.transaction_to == current_user.id %}
                                             <td>Transakcja wewnętrzna</td>
                                             <td class="text-success">
                                                 <b>+{{ item.value }} {{ currency.name.upper() }}</b></td>

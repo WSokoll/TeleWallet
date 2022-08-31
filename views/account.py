@@ -8,7 +8,7 @@ from sqlalchemy import or_, and_
 from wtforms import StringField
 from wtforms.validators import InputRequired, Regexp
 
-from models import SubAccount, Currency, User, InternalTransaction, CurrencyExchange
+from models import SubAccount, Currency, User, InternalTransaction, CurrencyExchange, ExternalTransaction
 
 bp = Blueprint('bp_account', __name__, template_folder='templates')
 
@@ -44,6 +44,9 @@ def get(account_id=0, currency_name='pln'):
                                                                 InternalTransaction.currency_id == currency.id))).\
         order_by(InternalTransaction.transaction_date).all()
 
+    ex_transactions = ExternalTransaction.query.filter(and_(ExternalTransaction.transaction_to == user.id,
+                                                            ExternalTransaction.currency_id == currency.id))
+
     exchanges = CurrencyExchange.query.filter(or_(and_(CurrencyExchange.user_id == user.id,
                                                        CurrencyExchange.currency_from == currency.id),
                                                   and_(CurrencyExchange.user_id == user.id,
@@ -52,6 +55,7 @@ def get(account_id=0, currency_name='pln'):
 
     history = []
     history.extend(in_transactions)
+    history.extend(ex_transactions)
     history.extend(exchanges)
     history.sort(key=lambda x: x.transaction_date if hasattr(x, 'transaction_date') else x.exchange_date, reverse=True)
 
