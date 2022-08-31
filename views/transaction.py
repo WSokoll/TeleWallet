@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from flask import Blueprint, render_template, abort, redirect, url_for, flash
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, HiddenField
 from wtforms.validators import InputRequired, Length, Regexp
 
 from app import db
-from models import Currency, SubAccount, InternalTransaction, User
+from models import Currency, SubAccount, InternalTransaction, User, ExternalTransaction
 from validators import ValueVSOwnedValidator, UserExistsValidator
 
 bp = Blueprint('bp_transaction', __name__, template_folder='templates')
@@ -17,7 +17,7 @@ bp = Blueprint('bp_transaction', __name__, template_folder='templates')
 
 
 # Internal transaction page
-@bp.route('/transaction/internal/<account_id>/<string:currency_name>', methods=['GET', 'POST'])
+@bp.route('/transaction/internal/<int:account_id>/<string:currency_name>', methods=['GET', 'POST'])
 @login_required
 def get_post_internal(account_id=0, currency_name='pln'):
     currencies = Currency.query.order_by(Currency.name).all()
@@ -79,23 +79,33 @@ def get_post_internal(account_id=0, currency_name='pln'):
     return render_template('internal_transaction.html', currency=currency, sub_account=sub_account_from, form=form)
 
 
-@bp.route('/transaction/external/success/<account_id>/<value>', methods=['GET'])
+@bp.route('/transaction/external/success/<int:account_id>/<string:value>', methods=['GET'])
 @login_required
-def get_external_success(account_id=0, value=None):
+def get_external_success(account_id, value):
 
-    if account_id == 0 or not value:
+    if account_id != current_user.account_id:
         abort(404)
 
-    # TODO: dodanie przelewu...
+    transaction = ExternalTransaction(
+        transaction_from='tpay',
+        transaction_to=current_user.id,
+        currency_id='pln',
+        value=float(value),
+        transaction_date=datetime.now(),
+        name='tpay doładowanie'
+    )
+
+    db.session.add(transaction)
+    db.session.commit()
 
     return render_template('external_success.html', account_id=account_id)
 
 
-@bp.route('/transaction/external/error/<account_id>', methods=['GET'])
+@bp.route('/transaction/external/error/<int:account_id>', methods=['GET'])
 @login_required
-def get_external_error(account_id=0):
+def get_external_error(account_id):
 
-    if account_id == 0:
+    if account_id != current_user.account_id:
         abort(404)
 
     return render_template('external_error.html', account_id=account_id)
