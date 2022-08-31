@@ -96,6 +96,7 @@
                     <div class="card-header">Doładowanie konta (aktualnie jedyną wspieraną walutą jest PLN)</div>
                     <div class="card-body">
                         <form method="POST" action="#">
+                            {{ form.csrf_token }}
                             <div class="row">
                                 <div class="col-md-4 mx-auto">
                                     {{ form.value.label(class_="form-label") }}

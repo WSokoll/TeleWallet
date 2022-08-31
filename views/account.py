@@ -1,3 +1,5 @@
+import hashlib
+
 import requests as requests
 from flask import Blueprint, render_template, abort, url_for, flash, redirect
 from flask_login import login_required, current_user
@@ -66,12 +68,13 @@ def get(account_id=0, currency_name='pln'):
           "amount": float(form.value.data),
           "description": "Testing",
           "crc": 3214,
-          "md5sum": "696160c3ca4b2ffbf1801036769a931a",     # TODO: jak wyliczać
+          "md5sum": "696160c3ca4b2ffbf1801036769a931a",
           "group": 150,
-          "return_url": url_for('bp_transaction.get_external_success',
-                                account_id=current_user.account_id,
-                                value=form.value.data),
-          "return_error_url": url_for('bp_transaction.get_external_error', account_id=current_user.account_id),
+          "return_url": 'http://127.0.0.1:5000' + url_for('bp_transaction.get_external_success',
+                                                          account_id=current_user.account_id,
+                                                          value=form.value.data),
+          "return_error_url": 'http://127.0.0.1:5000' +
+                              url_for('bp_transaction.get_external_error', account_id=current_user.account_id),
           "language": "pl",
           "email": current_user.email,
           "name": current_user.name,
@@ -82,7 +85,9 @@ def get(account_id=0, currency_name='pln'):
         res = requests.post(API_ADD, json=body)
 
         if res.status_code == 200:
-            return redirect(res.url)
+            print(res.json())
+            print(hashlib.md5(('1010&' + form.value.data + '&3214&' + 'd741842191b1b3a4fae4bdb1513462900f1d1e499703a98b03f95f18bfce8fcd').encode()).hexdigest())
+            return redirect(res.json()['url'])
         else:
             abort(404)
 
