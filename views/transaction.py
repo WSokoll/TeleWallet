@@ -95,6 +95,9 @@ def get_external_success(account_id, value):
         name='tpay doładowanie'
     )
 
+    sub_account = SubAccount.query.filter_by(account_id=account_id, currency_id=1).first()
+    sub_account.balance = sub_account.balance + float(value)
+
     db.session.add(transaction)
     db.session.commit()
 
