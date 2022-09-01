@@ -12,14 +12,15 @@ from models import SubAccount, Currency, CurrencyExchange
 bp = Blueprint('bp_exchange', __name__, template_folder='templates')
 
 
-@bp.route('/exchange/<account_id>', methods=['GET', 'POST'])
+@bp.route('/exchange/<int:account_id>', methods=['GET', 'POST'])
 @login_required
-def get_post(account_id=0):
-
-    if account_id == 0:
-        abort(404)
+def get_post(account_id):
 
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
+
+    if not sub_accounts:
+        abort(404)
+
     currencies = []
     for sa in sub_accounts:
         currencies.append(Currency.query.filter_by(id=sa.currency_id).first())
@@ -29,7 +30,8 @@ def get_post(account_id=0):
     class ExchangeForm(FlaskForm):
         currency_from = SelectField('Waluta źródłowa:', validators=[InputRequired()], choices=currency_names)
         currency_to = SelectField('Waluta docelowa', validators=[InputRequired()], choices=currency_names)
-        value_from = StringField('Wartość przed wymianą', validators=[InputRequired(), Regexp(r'^[0-9.]*$')])
+        value_from = StringField('Wartość przed wymianą', validators=[InputRequired(),
+                                                                      Regexp(r'^[0-9]*$|^[0-9]*[.][0-9][0-9]$')])
         value_to = StringField('Wartość po wymianie', render_kw={'readonly': True}, validators=[Regexp(r'^[0-9.]*$')])
 
     form = ExchangeForm()
@@ -69,13 +71,15 @@ def get_post(account_id=0):
     return render_template('currency_exchange.html', form=form, sub_accounts=sub_accounts, currencies=currencies)
 
 
-@bp.route('/exchange/<account_id>/<currency_name>/other')
+@bp.route('/exchange/<int:account_id>/<string:currency_name>/other')
 @login_required
-def rest_currencies(account_id=0, currency_name=''):
-    if account_id == 0 or currency_name == '':
-        abort(404)
+def rest_currencies(account_id, currency_name):
 
     sub_accounts = SubAccount.query.filter_by(account_id=account_id).all()
+
+    if not sub_accounts:
+        return 404
+
     currencies = []
     for sa in sub_accounts:
         currencies.append(Currency.query.filter_by(id=sa.currency_id).first())
@@ -83,7 +87,7 @@ def rest_currencies(account_id=0, currency_name=''):
     return jsonify({'other': [c.name for c in currencies if c.name != currency_name]})
 
 
-@bp.route('/exchange/<currency_from_name>/<currency_to_name>/<value_from>')
+@bp.route('/exchange/<string:currency_from_name>/<string:currency_to_name>/<string:value_from>')
 @login_required
 def value_to(currency_from_name='pln', currency_to_name='pln', value_from=''):
     if value_from == '':

@@ -16,9 +16,7 @@ bp = Blueprint('bp_account', __name__, template_folder='templates')
 # Show account page
 @bp.route('/account/<int:account_id>/<string:currency_name>', methods=['GET', 'POST'])
 @login_required
-def get(account_id=0, currency_name='pln'):
-    if account_id == 0:
-        abort(404)
+def get(account_id, currency_name='pln'):
 
     currency = Currency.query.filter_by(name=currency_name).first()
     if not currency:
@@ -61,7 +59,7 @@ def get(account_id=0, currency_name='pln'):
 
     # External transaction
     class ExternalTransactionForm(FlaskForm):
-        value = StringField('Kwota doładowania', validators=[InputRequired(), Regexp(r'^[0-9.]*$')]) #TODO: regexp musi akceptować tylko 10.00 - dwa miejsca po kropce
+        value = StringField('Kwota doładowania', validators=[InputRequired(), Regexp(r'^[0-9.]{1,}[.][0-9][0-9]$')])
 
     form = ExternalTransactionForm()
 

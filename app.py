@@ -10,7 +10,6 @@ from passlib.hash import sha256_crypt
 login_manager = LoginManager()
 db = SQLAlchemy()
 
-# TODO: uporządkować base.html (dwa razy podlinkowany bootstrap?)
 
 def create_app():
     app = Flask(__name__)

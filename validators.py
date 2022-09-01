@@ -4,7 +4,6 @@ from wtforms import ValidationError
 
 from models import User
 
-# TODO: (Babel) - translation of validation error messages
 
 class ValueVSOwnedValidator:
     """Validates that user has enough money to sent given amount
@@ -17,7 +16,7 @@ class ValueVSOwnedValidator:
 
     def __call__(self, form, field):
 
-        if not re.match(r'^[0-9.]*$', field.data):
+        if not re.match(r'^[0-9]*$|^[0-9]*[.][0-9][0-9]$', field.data):
             raise ValidationError(
                 self.message
                 or field.gettext(
