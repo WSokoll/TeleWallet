@@ -70,7 +70,7 @@ def get(account_id, currency_name='pln'):
           "amount": float(form.value.data),
           "description": "Testing",
           "crc": 3214,
-          "md5sum": "696160c3ca4b2ffbf1801036769a931a",
+          "md5sum": hashlib.md5(('1010&' + form.value.data + '&3214&' + 'demo').encode()).hexdigest(),
           "group": 150,
           "return_url": 'http://127.0.0.1:5000' + url_for('bp_transaction.get_external_success',
                                                           account_id=current_user.account_id,
@@ -88,7 +88,6 @@ def get(account_id, currency_name='pln'):
 
         if res.status_code == 200:
             print(res.json())
-            print(hashlib.md5(('1010&' + form.value.data + '&3214&' + 'd741842191b1b3a4fae4bdb1513462900f1d1e499703a98b03f95f18bfce8fcd').encode()).hexdigest())
             return redirect(res.json()['url'])
         else:
             abort(404)
